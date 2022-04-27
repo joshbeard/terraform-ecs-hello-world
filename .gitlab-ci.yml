@@ -31,8 +31,11 @@ tf:plan:
   extends: ._terraform_base
   stage: Plan
   script:
+    # NOTE: The TF_BACKEND_CONFIG is a variable _file_ provided
+    # by GitLab.
     - terraform init
       -no-color
+      -backend-config=${TF_BACKEND_CONFIG}
       -reconfigure
 
     - terraform validate

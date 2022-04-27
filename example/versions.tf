@@ -2,15 +2,7 @@
 # Provider and version configuration
 # -----------------------------------------------------------------------------
 terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }
-  required_version = ">= 1.0.0"
-}
-
-provider "aws" {
-  region = "us-west-2"
+  # NOTE: The S3 backend configuration is provided via a GitLab variable.
+  # Comment this to use the local backend.
+  backend s3 {}
 }
