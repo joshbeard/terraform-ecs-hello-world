@@ -125,7 +125,7 @@ pre-commit run --all
 
 A [GitLab pipeline configuration](.gitlab-ci.yml) is included.
 
-See <https://gitlab.com/joshbeard/terraform-ecs-hello-world/-/jobs/2386136970>
+See <https://gitlab.com/joshbeard/terraform-ecs-hello-world/-/pipelines/526332055>
 for an example of the GitLab pipeline.
 
 ## Authors
