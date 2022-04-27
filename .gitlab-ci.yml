@@ -1,0 +1,59 @@
+# =============================================================================
+# GitLab Pipeline configuration for deploying hello-world-rest
+#
+# This includes jobs for running Terraform
+# =============================================================================
+---
+stages:
+  - Plan
+  - Apply
+
+variables:
+  # The path to the Terraform module to apply
+  TF_DIR: example
+  # The base filename for the Terraform plan file to create
+  TF_PLAN_OUT: hello.tfplan
+
+# These jobs are templates that are sourced by other jobs that share common
+# parameters.
+._terraform_base:
+  image:
+    name: hashicorp/terraform:1.1.9
+    entrypoint: [""]
+  before_script:
+    - cd ${TF_DIR}
+  only:
+    variables:
+      - $CI_COMMIT_REF_PROTECTED == "true"
+  tags: []
+
+tf:plan:
+  extends: ._terraform_base
+  stage: Plan
+  script:
+    - terraform init
+      -no-color
+      -reconfigure
+
+    - terraform validate
+
+    - terraform plan
+      ${TF_PLAN_ARGS}
+      -input=false
+      -refresh=true
+      -out=${TF_PLAN_FILE}
+  artifacts:
+    paths:
+      - ${TF_DIR}/.terraform
+      - ${TF_DIR}/.terraform.lock.hcl
+      - ${TF_DIR}/${TF_PLAN_FILE}
+
+tf:apply:
+  extends: ._terraform_base
+  stage: Apply
+  when: manual
+  script:
+    - terraform apply
+      -input=false
+      -auto-approve
+      ${TF_PLAN_FILE}
