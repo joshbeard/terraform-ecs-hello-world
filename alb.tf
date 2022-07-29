@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 6.0"
+  version = "~> 7.0"
 
   name = var.name
 
